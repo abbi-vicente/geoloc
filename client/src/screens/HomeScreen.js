@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert, FlatList } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert, FlatList, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import HistoryItem from "../components/HistoryItem";
@@ -9,6 +9,7 @@ const HomeScreen = () => {
   const [geoInfo, setGeoInfo] = useState(null);
   const [ipAddress, setIpAddress] = useState("");
   const [history, setHistory] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     // Fetch user's IP info on initial load
@@ -29,6 +30,7 @@ const HomeScreen = () => {
 
   const handleSearch = () => {
     fetchGeoInfo(ipAddress);
+    setIpAddress("");
   };
 
   const handleClear = () => {
@@ -36,9 +38,20 @@ const HomeScreen = () => {
     fetchGeoInfo();
   };
 
-  const handleDelete = (item) => {
-    const updatedHistory = history.filter((historyItem) => historyItem.ip !== item.ip);
+  const handleSelect = (ip) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(ip)) {
+        return prevSelectedItems.filter((item) => item !== ip);
+      } else {
+        return [...prevSelectedItems, ip];
+      }
+    });
+  };
+
+  const handleDeleteSelected = () => {
+    const updatedHistory = history.filter((historyItem) => !selectedItems.includes(historyItem.ip));
     setHistory(updatedHistory);
+    setSelectedItems([]);
   };
 
   return (
@@ -63,9 +76,12 @@ const HomeScreen = () => {
           <Text style={styles.historyTitle}>Search History</Text>
           <FlatList
             data={history}
-            renderItem={({ item }) => <HistoryItem item={item} onDelete={handleDelete} />}
+            renderItem={({ item }) => (
+              <HistoryItem item={item} selected={selectedItems.includes(item.ip)} onSelect={handleSelect} />
+            )}
             keyExtractor={(item) => item.ip}
           />
+          <Button title="Delete Selected" onPress={handleDeleteSelected} disabled={selectedItems.length === 0} />
         </View>
       )}
     </View>

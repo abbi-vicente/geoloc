@@ -22,7 +22,7 @@ And React Native/Expo for frontend
  1. MONGO_URI - mongoDB atlas connection URL
  2. JWT_SECRET - a secret phrase that JWT will use to encrypt the tokens it will give to users.
  3. PORT - a virtual point where network connections start and end (example: 4000)
- - Run the server (**cd server** > **nodemon app.js**)
+ - Run the server (**cd server** > **nodemon server.js**)
  
 ## Routes to Test
 ### Authorization

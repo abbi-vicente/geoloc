@@ -38,3 +38,5 @@ And React Native/Expo for frontend
 - You may install Expo Go on your mobile phone, scan the QR code, and run it from there.
 - If you have Android studio on your computer, you may use that.
 - Otherwise, press **w** on your keyboard to run the app in your browser.
+
+NOTE: This is a work in progress. You may add in some more features and we can work together. **wink*
